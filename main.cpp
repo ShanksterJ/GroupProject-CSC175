@@ -3,9 +3,9 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
- 
+
 using namespace std;
- 
+
 string SlotSelect() {
     struct Symbol {
         string emoji;
@@ -17,10 +17,10 @@ string SlotSelect() {
         {"🌟", 15},
         {"🔥", 10}
     };
- 
+
     int percent = 100;
     int random = rand() % percent;
- 
+
     int totalpercent = 0;
     for (const auto& symbol : symbols) {
         totalpercent += symbol.weight;
@@ -30,7 +30,7 @@ string SlotSelect() {
     }
     return "❓";
 }
- 
+
 int points(string slot1, string slot2, string slot3) {
     if (slot1 == slot2 && slot2 == slot3) {
         if (slot1 == "🔥") return 50;
@@ -44,23 +44,33 @@ int points(string slot1, string slot2, string slot3) {
     }
     return 0;
 }
- 
+
 int main() {
     srand(time(0));
- 
-    string slot1 = SlotSelect();
-    string slot2 = SlotSelect();
-    string slot3 = SlotSelect();
- 
-    int pointsout = points(slot1, slot2, slot3);
- 
-    cout << " ──────── \n"
-         << "│─SLOTS!─│\n"
-         << "│────────│\n"
-         << "│" << slot1 << " │" << slot2 << " │" << slot3 << " │\n"
-         << "│────────│\n"
-         << "│  " << setw(3) << pointsout << "   │\n"
-         << " ──────── \n" << endl;
- 
+    char again = 'y';
+
+    cout << "\nWelcome Player! lets Spin The Wheel!\n" << endl;
+
+
+    while (again == 'y' || again == 'Y') {
+
+        string slot1 = SlotSelect();
+        string slot2 = SlotSelect();
+        string slot3 = SlotSelect();
+
+        int pointsout = points(slot1, slot2, slot3);
+
+        cout << "   ──────── \n"
+        << "│  ─SLOTS!─  │\n"
+        << "│  ────────  │\n"
+        << "│" << slot1 << " │ " << slot2 << " │ " << slot3 << "│ \n"
+        << "│  ────────  │ \n"
+        << "│   " << setw(3) << pointsout << "      │\n" // Payout with fixed width
+        << "   ────────  \n" << endl;
+        cout << "Would you like to play again? (y/n): ";
+        cin >> again;
+    }
+    cout << "Thanks for playing!" << endl;
+
     return 0;
 }
