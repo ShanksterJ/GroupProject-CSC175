@@ -1,50 +1,71 @@
 #include <iostream>
+#include <string>
 #include <cstdlib>
 #include <ctime>
+#include <iomanip>
 
 using namespace std;
 
-int rollDice () {
-  return (rand() % 6 + 1) + (rand() % 6 + 1);
+string SlotSelect() {
+    struct Symbol {
+        string emoji;
+        int weight;
+    } symbols[] = {
+        {"🍒", 30},
+        {"🍋", 25},
+        {"🔔", 20},
+        {"🌟", 15},
+        {"🔥", 10}
+    };
+
+    int percent = 100;
+    int random = rand() % percent;
+
+    int totalpercent = 0;
+    for (const auto& symbol : symbols) {
+        totalpercent += symbol.weight;
+        if (random < totalpercent) {
+            return symbol.emoji;
+        }
+    }
+    return "❓";
 }
 
-int main() {
-  srand(time(0));
-  int point = 0;
-  char again = 'y';
-
-  cout << "Welcome Shooter! lets roll the dice!" << endl;
-
-  while (again == 'y' || again == 'Y') {
-    int roll = rollDice();
-    cout << "You rolled: " << roll << endl;
-
-    if (roll == 7 || roll == 11) {
-      cout << "You win!" << endl;
-    } else if (roll == 2 || roll == 3 || roll == 12) {
-      cout << "Craps! Sorry you lose!" << endl;
-    } else {
-      cout << "Point is " << roll << endl;
-      int point = roll;
-      int rollNext;
-
-      do {
-        rollNext = rollDice();
-        cout << "You rolled: " << rollNext << endl;
-
-        if (rollNext == point){
-          cout << "You win!" << endl;
-          break;
-        } else if (rollNext == 7 ) {
-          cout << "Sevens Out!! Sorry you lost!" << endl;
-          break;
-        }
-      } while (true);
+int points(string slot1, string slot2, string slot3) {
+    if (slot1 == slot2 && slot2 == slot3) {
+        if (slot1 == "🔥") return 50;
+        if (slot1 == "🌟") return 30;
+        if (slot1 == "🔔") return 20;
+        if (slot1 == "🍋") return 10;
+        if (slot1 == "🍒") return 5;
     }
-    cout << "Would you like to play again? (y/n): ";
-    cin >> again;
-  }
-  cout << "Thanks for playing!" << endl;
+    else if (slot1 == slot2 || slot2 == slot3 || slot1 == slot3) {
+        return 2;
+    }
+    return 0;
+}
 
-  return 0;
+void playSlots() {
+    char again = 'y';
+    cout << "\nWelcome Player! Let's Spin The Wheel!\n" << endl;
+
+    while (again == 'y' || again == 'Y') {
+        string slot1 = SlotSelect();
+        string slot2 = SlotSelect();
+        string slot3 = SlotSelect();
+
+        int pointsout = points(slot1, slot2, slot3);
+
+        cout << "   ──────── \n"
+             << "│  ─SLOTS!─  │\n"
+             << "│  ────────  │\n"
+             << "│" << slot1 << " │ " << slot2 << " │ " << slot3 << "│ \n"
+             << "│  ────────  │ \n"
+             << "│   " << setw(3) << pointsout << "      │\n"
+             << "   ────────  \n" << endl;
+
+        cout << "Would you like to play again? (y/n): ";
+        cin >> again;
+    }
+    cout << "Thanks for playing Slots!\n" << endl;
 }
