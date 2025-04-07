@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include "slots.cpp"
+#include "craps.cpp"
+
 
 using namespace std;
 
